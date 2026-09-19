@@ -2,356 +2,276 @@
 <html lang="zh-HK">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#efe7d8" />
-  <title>今天吃什么.exe · 香港米线版</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="今天吃什么" />
+  <title>今天吃什么.exe · 香港米线</title>
   <style>
-    :root{
-      --paper:#efe7d8;
-      --ink:#1f221f;
-      --muted:#6e7068;
-      --accent:#d9543d;
-      --green:#315c4a;
-      --panel:#f8f4ea;
-      --line:#cfc6b5;
-      --shadow: 0 18px 50px rgba(54,48,38,.16);
-      --radius:24px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang HK","PingFang SC","Noto Sans TC",sans-serif;
-      color:var(--ink);
-      background:
-        radial-gradient(circle at 20% 0%, rgba(255,255,255,.65), transparent 30%),
-        linear-gradient(180deg,#f4ecdf 0%,#e7ddcd 100%);
-      min-height:100vh;
-    }
-    .app{
-      width:min(430px,100%);
-      min-height:100vh;
-      margin:0 auto;
-      padding:18px 16px 36px;
-    }
-    .topbar{
-      display:flex;justify-content:space-between;align-items:center;
-      padding:6px 2px 18px;
-      font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-      font-size:12px;letter-spacing:.04em;color:var(--muted);
-    }
-    .dot{width:8px;height:8px;border-radius:50%;background:#6c8f74;display:inline-block;margin-right:6px}
-    .hero{
-      background:rgba(248,244,234,.88);
-      border:1px solid rgba(71,62,49,.14);
-      box-shadow:var(--shadow);
-      border-radius:30px;
-      overflow:hidden;
-      position:relative;
-    }
-    .hero::after{
-      content:"";
-      position:absolute;inset:0;pointer-events:none;
-      background:repeating-linear-gradient(0deg,rgba(60,50,35,.018),rgba(60,50,35,.018) 1px,transparent 1px,transparent 4px);
-      mix-blend-mode:multiply;
-    }
-    .hero-head{padding:26px 22px 16px}
-    .eyebrow{
-      font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-      font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--green);font-weight:700;
-    }
-    h1{font-size:36px;line-height:1.02;margin:10px 0 8px;letter-spacing:-.035em}
-    .sub{color:var(--muted);font-size:14px;line-height:1.55;margin:0}
-    .screen{
-      margin:8px 14px 14px;
-      border:1px solid #232722;
-      border-radius:22px;
-      background:#202820;
-      color:#eef4e6;
-      padding:18px;
-      min-height:240px;
-      box-shadow:inset 0 0 0 4px rgba(255,255,255,.03);
-      position:relative;
-    }
-    .scanline{
-      position:absolute;inset:0;border-radius:22px;pointer-events:none;
-      background:linear-gradient(rgba(255,255,255,.02) 50%,rgba(0,0,0,.02) 50%);
-      background-size:100% 4px;
-    }
-    .screen small{
-      font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-      color:#a5ba9d;font-size:10px;letter-spacing:.08em
-    }
-    .dish{font-size:27px;font-weight:800;margin:9px 0 4px;letter-spacing:-.02em}
-    .restaurant{font-size:15px;color:#d4e3ca;margin-bottom:12px}
-    .meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
-    .chip{border:1px solid rgba(232,241,222,.22);border-radius:12px;padding:10px 11px;font-size:12px;color:#dfead8}
-    .chip b{display:block;color:#fff;font-size:14px;margin-top:2px}
-    .reason{margin-top:14px;font-size:12px;line-height:1.55;color:#c8d6c0;border-top:1px dashed rgba(255,255,255,.18);padding-top:11px}
-    .primary{
-      width:calc(100% - 28px);margin:0 14px 14px;
-      border:0;border-radius:18px;padding:18px 20px;
-      background:var(--accent);color:#fff;font-size:17px;font-weight:800;
-      box-shadow:0 10px 24px rgba(217,84,61,.25);
-      cursor:pointer;transition:.15s transform,.15s filter;
-    }
-    .primary:active{transform:scale(.985);filter:brightness(.96)}
-    .controls{
-      margin-top:16px;
-      background:rgba(248,244,234,.78);
-      border:1px solid rgba(71,62,49,.12);
-      border-radius:24px;padding:18px;
-    }
-    .controls h2{font-size:15px;margin:0 0 14px}
-    .row{display:flex;gap:8px;flex-wrap:wrap}
-    .pill{
-      border:1px solid var(--line);background:#f8f4ea;color:#4f504b;
-      padding:10px 12px;border-radius:999px;font-size:12px;cursor:pointer;
-    }
-    .pill.active{background:#2f5e4c;color:#fff;border-color:#2f5e4c}
-    .slider-wrap{margin-top:15px}
-    .slider-head{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:7px}
-    input[type=range]{width:100%;accent-color:var(--green)}
-    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-    .secondary{
-      border:1px solid var(--line);background:#f8f4ea;border-radius:15px;padding:13px 12px;
-      font-weight:700;color:#363832;cursor:pointer;
-    }
-    .secondary:disabled{opacity:.45;cursor:not-allowed}
-    .history{margin-top:16px}
-    .history h3{font-size:13px;margin:0 0 8px;color:#595b55}
-    .history-list{display:flex;gap:8px;overflow:auto;padding-bottom:4px}
-    .mini{min-width:160px;background:#f8f4ea;border:1px solid var(--line);border-radius:16px;padding:11px}
-    .mini .m1{font-size:11px;color:var(--muted)}
-    .mini .m2{font-size:13px;font-weight:700;margin-top:4px}
-    .foot{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;line-height:1.6;color:#7b786f;margin:18px 4px 0}
-    .toast{
-      position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120px);
-      background:#1d211d;color:#fff;padding:11px 16px;border-radius:999px;font-size:12px;
-      transition:.25s;z-index:20;white-space:nowrap;box-shadow:0 10px 30px rgba(0,0,0,.22)
-    }
-    .toast.show{transform:translateX(-50%) translateY(0)}
+:root{--paper:#efe7d8;--ink:#1f221f;--muted:#6e7068;--accent:#d9543d;--green:#315c4a;--panel:#f8f4ea;--line:#cfc6b5;--shadow:0 18px 50px rgba(54,48,38,.16)}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang HK","PingFang SC","Noto Sans TC",sans-serif;color:var(--ink);background:radial-gradient(circle at 20% 0%,rgba(255,255,255,.65),transparent 30%),linear-gradient(180deg,#f4ecdf 0%,#e7ddcd 100%);min-height:100vh}.app{width:min(430px,100%);min-height:100vh;margin:0 auto;padding:18px 16px calc(38px + env(safe-area-inset-bottom))}.topbar{display:flex;justify-content:space-between;align-items:center;padding:6px 2px 18px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;letter-spacing:.04em;color:var(--muted)}.dot{width:8px;height:8px;border-radius:50%;background:#6c8f74;display:inline-block;margin-right:6px}.hero,.setup,.controls,.history{background:rgba(248,244,234,.88);border:1px solid rgba(71,62,49,.14);box-shadow:var(--shadow);border-radius:28px}.hero{overflow:hidden;position:relative}.hero-head{padding:26px 22px 16px}.eyebrow{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--green);font-weight:700}h1{font-size:36px;line-height:1.02;margin:10px 0 8px;letter-spacing:-.035em}.sub{color:var(--muted);font-size:14px;line-height:1.55;margin:0}.live-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}.badge{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:7px 9px;background:#f6f1e7;color:#585b54}.badge.ok{background:#e2eee6;color:#28513f;border-color:#aac6b5}.screen{margin:8px 14px 14px;border:1px solid #232722;border-radius:22px;background:#202820;color:#eef4e6;padding:18px;min-height:250px;box-shadow:inset 0 0 0 4px rgba(255,255,255,.03);position:relative}.scanline{position:absolute;inset:0;border-radius:22px;pointer-events:none;background:linear-gradient(rgba(255,255,255,.02) 50%,rgba(0,0,0,.02) 50%);background-size:100% 4px}.screen small{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#a5ba9d;font-size:10px;letter-spacing:.08em}.dish{font-size:25px;font-weight:800;margin:9px 0 4px;letter-spacing:-.02em;line-height:1.22}.restaurant{font-size:14px;color:#d4e3ca;margin-bottom:12px;line-height:1.45}.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.chip{border:1px solid rgba(232,241,222,.22);border-radius:12px;padding:10px 11px;font-size:12px;color:#dfead8}.chip b{display:block;color:#fff;font-size:13px;margin-top:2px;line-height:1.3}.reason{margin-top:14px;font-size:12px;line-height:1.55;color:#c8d6c0;border-top:1px dashed rgba(255,255,255,.18);padding-top:11px}.primary{width:calc(100% - 28px);margin:0 14px 14px;border:0;border-radius:18px;padding:18px 20px;background:var(--accent);color:#fff;font-size:17px;font-weight:800;box-shadow:0 10px 24px rgba(217,84,61,.25);cursor:pointer;transition:.15s transform,.15s filter}.primary:active{transform:scale(.985)}.primary:disabled{filter:grayscale(.4);opacity:.55}.setup,.controls,.history{margin-top:16px;padding:18px}.section-title{font-size:15px;font-weight:800;margin-bottom:11px}.section-title span{display:inline-grid;place-items:center;width:23px;height:23px;background:var(--green);color:#fff;border-radius:50%;font-size:11px;margin-right:6px}.setup p{font-size:12px;color:var(--muted);line-height:1.5}.input-row{display:grid;grid-template-columns:1fr auto;gap:8px}.input-row input{min-width:0;border:1px solid var(--line);background:#fffaf1;border-radius:14px;padding:12px 13px;font-size:13px;outline:none}.small-btn,.secondary,.link-btn{border:1px solid var(--line);background:#f8f4ea;border-radius:14px;padding:11px 12px;font-weight:700;color:#363832;cursor:pointer}.small-btn{background:var(--green);color:#fff;border-color:var(--green)}.hint{font-size:10px;color:#77766f;margin-top:9px;line-height:1.5}.hint code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.row{display:flex;gap:8px;flex-wrap:wrap}.pill{border:1px solid var(--line);background:#f8f4ea;color:#4f504b;padding:10px 12px;border-radius:999px;font-size:12px;cursor:pointer}.pill.active{background:#2f5e4c;color:#fff;border-color:#2f5e4c}.slider-wrap{margin-top:16px}.slider-head{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:7px}input[type=range]{width:100%;accent-color:var(--green)}.filters{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px;font-size:12px;color:#565953}.filters label{display:flex;gap:6px;align-items:center}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}.secondary{font-size:12px}.secondary:disabled{opacity:.42;cursor:not-allowed}.settings{margin-top:13px;border-top:1px solid var(--line);padding-top:11px}.settings summary{font-size:11px;color:var(--muted);cursor:pointer}.settings-inner{display:flex;gap:8px;margin-top:10px}.link-btn{font-size:11px;padding:9px 10px}.danger{color:#a33d31}.history{box-shadow:none}.history h3{font-size:13px;margin:0 0 9px;color:#595b55}.history-list{display:flex;gap:8px;overflow:auto;padding-bottom:4px}.mini{min-width:190px;background:#fffaf1;border:1px solid var(--line);border-radius:16px;padding:11px}.mini .m1{font-size:11px;color:var(--muted)}.mini .m2{font-size:13px;font-weight:700;margin-top:4px;line-height:1.35}.foot{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;line-height:1.65;color:#77736b;margin:18px 4px 0}.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(140px);background:#1d211d;color:#fff;padding:11px 16px;border-radius:999px;font-size:12px;transition:.25s;z-index:20;white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis;box-shadow:0 10px 30px rgba(0,0,0,.22)}.toast.show{transform:translateX(-50%) translateY(0)}.hidden{display:none!important}
+
   </style>
 </head>
 <body>
-  <main class="app">
-    <div class="topbar">
-      <span><span class="dot"></span>HONG KONG FOOD RANDOMIZER</span>
-      <span id="clock">12:55</span>
+<main class="app">
+  <div class="topbar">
+    <span><span class="dot"></span>HONG KONG FOOD RANDOMIZER</span>
+    <span id="clock">--:--</span>
+  </div>
+
+  <section class="hero">
+    <div class="hero-head">
+      <div class="eyebrow">今天吃什么.exe · V2</div>
+      <h1>今天不许纠结。</h1>
+      <p class="sub">真实位置 → Google 找附近米线店 → 只对有已核实菜单规则的店生成具体米线 → 真随机。</p>
+      <div class="live-row">
+        <span class="badge" id="locationBadge">📍 未定位</span>
+        <span class="badge" id="dataBadge">Google 未连接</span>
+      </div>
     </div>
 
-    <section class="hero">
-      <div class="hero-head">
-        <div class="eyebrow">今天吃什么.exe</div>
-        <h1>今天不许纠结。</h1>
-        <p class="sub">附近营业中的米线店 → 随机一家 → 再随机一款。AI 负责理解菜单，最后由真正的随机数决定。</p>
+    <div class="screen">
+      <div class="scanline"></div>
+      <small>DESTINY OUTPUT / 命运指定</small>
+      <div class="dish" id="dish">先连接 Google 并定位</div>
+      <div class="restaurant" id="restaurant">不会用示例店冒充真实店。</div>
+      <div class="meta">
+        <div class="chip">距离<b id="distance">—</b></div>
+        <div class="chip">Google 评分<b id="rating">—</b></div>
+        <div class="chip">菜单依据<b id="menuSource">—</b></div>
+        <div class="chip">营业状态<b id="status">—</b></div>
       </div>
-
-      <div class="screen">
-        <div class="scanline"></div>
-        <small>DESTINY OUTPUT / 命运指定</small>
-        <div class="dish" id="dish">点击随机一下</div>
-        <div class="restaurant" id="restaurant">还没决定今天吃什么。</div>
-
-        <div class="meta">
-          <div class="chip">距离<b id="distance">—</b></div>
-          <div class="chip">价格<b id="price">—</b></div>
-          <div class="chip">辣度<b id="spicy">—</b></div>
-          <div class="chip">营业状态<b id="status">—</b></div>
-        </div>
-
-        <div class="reason" id="reason">筛选条件：1.5 km 内 · 营业中 · 有明确米线菜品 · HK$80 以下</div>
-      </div>
-
-      <button class="primary" id="randomBtn">🎲 随机一下</button>
-    </section>
-
-    <section class="controls">
-      <h2>今天想怎么随机？</h2>
-      <div class="row" id="modeRow">
-        <button class="pill active" data-mode="all">完全听天由命</button>
-        <button class="pill" data-mode="spicy">今天想吃辣</button>
-        <button class="pill" data-mode="cheap">今天想省钱</button>
-        <button class="pill" data-mode="comfort">想吃舒服一点</button>
-      </div>
-
-      <div class="slider-wrap">
-        <div class="slider-head">
-          <span>搜索半径</span>
-          <span><b id="radiusLabel">1.5</b> km</span>
-        </div>
-        <input id="radius" type="range" min="0.5" max="3" step="0.5" value="1.5">
-      </div>
-
-      <div class="actions">
-        <button class="secondary" id="rerollBtn" disabled>↻ 不服，再抽</button>
-        <button class="secondary" id="mapBtn" disabled>⌖ 查看餐厅</button>
-      </div>
-
-      <div class="history">
-        <h3>刚刚抽过</h3>
-        <div class="history-list" id="historyList"></div>
-      </div>
-    </section>
-
-    <div class="foot">
-      DEMO MODE · 当前为产品原型，餐厅、价格、距离与菜单均为示例数据。正式版需要接入合法的餐厅/菜单数据源与定位接口；不会让 AI 猜不存在的菜品。
+      <div class="reason" id="reason">V2 只在能够确认菜单规则时生成具体菜品；未核实菜单的餐厅不会被硬猜。</div>
     </div>
-  </main>
-  <div class="toast" id="toast"></div>
 
+    <button class="primary" id="randomBtn">🎲 随机一下</button>
+  </section>
+
+  <section class="setup" id="setupCard">
+    <div class="section-title"><span>①</span> 首次连接 Google</div>
+    <p>需要一个 Google Maps API Key。Key 只保存在你这台浏览器的本地存储中，不写进 GitHub 仓库。</p>
+    <div class="input-row">
+      <input id="apiKeyInput" type="password" autocomplete="off" placeholder="粘贴 Google Maps API Key" />
+      <button class="small-btn" id="saveKeyBtn">保存</button>
+    </div>
+    <div class="hint">请给 Key 设置 HTTP referrer 限制：<code>https://7keiie.github.io/*</code></div>
+  </section>
+
+  <section class="controls">
+    <div class="section-title"><span>②</span> 今天想怎么随机？</div>
+    <div class="row">
+      <button class="pill active" data-mode="all">完全听天由命</button>
+      <button class="pill" data-mode="spicy">今天想吃辣</button>
+      <button class="pill" data-mode="cheap">少配料省一点</button>
+      <button class="pill" data-mode="comfort">想吃舒服一点</button>
+    </div>
+
+    <div class="slider-wrap">
+      <div class="slider-head"><span>搜索半径</span><span><b id="radiusLabel">1.5</b> km</span></div>
+      <input id="radius" type="range" min="0.5" max="5" step="0.5" value="1.5" />
+    </div>
+
+    <div class="filters">
+      <label><input type="checkbox" id="noOffal" /> 不要内脏</label>
+      <label><input type="checkbox" id="noCoriander" /> 不要芫茜</label>
+      <label><input type="checkbox" id="noPork" /> 不吃猪</label>
+      <label><input type="checkbox" id="noBeef" /> 不吃牛</label>
+    </div>
+
+    <div class="actions">
+      <button class="secondary" id="locateBtn">⌖ 使用我的位置</button>
+      <button class="secondary" id="rerollBtn" disabled>↻ 不服，再抽</button>
+      <button class="secondary" id="mapBtn" disabled>↗ Google Maps</button>
+      <button class="secondary" id="menuBtn" disabled>☰ 官方菜单</button>
+    </div>
+
+    <details class="settings">
+      <summary>Google 设置</summary>
+      <div class="settings-inner">
+        <button class="link-btn" id="changeKeyBtn">更换 API Key</button>
+        <button class="link-btn danger" id="forgetKeyBtn">删除本机保存的 Key</button>
+      </div>
+    </details>
+  </section>
+
+  <section class="history">
+    <h3>刚刚抽过</h3>
+    <div class="history-list" id="historyList"></div>
+  </section>
+
+  <div class="foot">
+    LIVE BETA · 餐厅位置、距离、评分与营业筛选来自 Google Maps Platform；具体米线组合目前只为「谭仔云南米线」与「谭仔三哥米线」使用品牌官方餐牌中已公开的汤底/配料规则。价格和分店实际供应以门店为准。
+  </div>
+</main>
+<div class="toast" id="toast"></div>
 <script>
-const demo = [
-  {
-    restaurant:"雲南人家 · 旺角", distance:0.4, open:true, map:"https://maps.google.com/?q=Mong+Kok+Hong+Kong",
-    dishes:[
-      {name:"酸辣肥牛米線",price:58,spicy:3,comfort:2},
-      {name:"番茄豬軟骨米線",price:55,spicy:0,comfort:5},
-      {name:"麻辣雞翼米線",price:52,spicy:4,comfort:2}
-    ]
+const $=id=>document.getElementById(id);
+const KEY_NAME='mifen_google_maps_key_v1';
+let mode='all', current=null, history=[], userPos=null, googleReady=false;
+
+const MENU={
+  tamjai:{
+    label:'谭仔官方餐牌', source:'https://tamjaimixian.com/%E9%A4%90%E7%89%8C/',
+    soups:['清汤底','重庆酸辣汤底','鲜番茄汤底','麻辣汤底','谭仔酸辣汤底','香茜鱼汤底'],
+    spicySoups:['重庆酸辣汤底','麻辣汤底','谭仔酸辣汤底'],
+    comfortSoups:['清汤底','鲜番茄汤底','香茜鱼汤底'],
+    toppings:['鱼腐','海带丝','豆卜','腐皮','生菜','鸡肉','芽菜','鱼蛋','炸酱','金菇','火腿','酸菜','韭菜','牛肉','鱼片头','牛丸','腩肉','猪膶','猪肉','特色墨丸','墨鱼春卷','卤水猪大肠','竹笙','皮蛋','脆肉鲩','莴笋','木耳','胜瓜','冬菇','猪红','竹笙素炸酱','素菜卷','芫茜山']
   },
-  {
-    restaurant:"小鍋米線研究所 · 太子", distance:0.8, open:true, map:"https://maps.google.com/?q=Prince+Edward+Hong+Kong",
-    dishes:[
-      {name:"麻酸雞肉小鍋米線",price:48,spicy:4,comfort:2},
-      {name:"金湯酸菜魚米線",price:62,spicy:2,comfort:4},
-      {name:"菌菇清湯米線",price:45,spicy:0,comfort:5}
-    ]
-  },
-  {
-    restaurant:"老街雲南米線 · 油麻地", distance:1.1, open:true, map:"https://maps.google.com/?q=Yau+Ma+Tei+Hong+Kong",
-    dishes:[
-      {name:"招牌豬頸肉米線",price:54,spicy:1,comfort:3},
-      {name:"酸菜肥牛米線",price:57,spicy:2,comfort:3},
-      {name:"麻辣牛筋腩米線",price:66,spicy:5,comfort:1}
-    ]
-  },
-  {
-    restaurant:"山野米線 · 佐敦", distance:1.6, open:true, map:"https://maps.google.com/?q=Jordan+Hong+Kong",
-    dishes:[
-      {name:"藤椒雞米線",price:59,spicy:4,comfort:2},
-      {name:"番茄肥牛米線",price:56,spicy:0,comfort:5},
-      {name:"酸湯魚片米線",price:64,spicy:2,comfort:4}
-    ]
-  },
-  {
-    restaurant:"滇味小館 · 深水埗", distance:2.3, open:true, map:"https://maps.google.com/?q=Sham+Shui+Po+Hong+Kong",
-    dishes:[
-      {name:"香辣牛肉米線",price:46,spicy:4,comfort:2},
-      {name:"清雞湯米線",price:39,spicy:0,comfort:5},
-      {name:"酸辣豬扒米線",price:44,spicy:3,comfort:2}
-    ]
+  samgor:{
+    label:'三哥官方餐牌', source:'https://www.tjsamgor.com/hk/menu/',
+    soups:['三哥招牌酸辣','番茄汤','麻辣','煳辣','砂砂汤','酸辣','清汤','素汤'],
+    spicySoups:['三哥招牌酸辣','麻辣','煳辣','酸辣'],
+    comfortSoups:['番茄汤','清汤','素汤'],
+    toppings:['火腿','金菇','木耳丝','豆卜','鲜冬菇','酸菜','腐皮','鸡肉午餐肉','生菜','韭菜','芽菜','翠玉瓜','鲜淮山','娃娃菜','乍酱','鸡肉','猪肉','鱼蛋','鱼片头','鱼腐','猪膶','牛丸','蜂巢豆腐','腩肉','滑牛肉','墨丸','竹笙','竹笙素乍酱','肥牛','鱼片','素菜卷','鸭血','脆皮肠','牛面肉','烟熏鸭胸']
   }
-];
+};
 
-let mode = "all";
-let current = null;
-let history = [];
+const GROUPS={
+  offal:['猪膶','卤水猪大肠','猪红','猪膶','鸭血'],
+  coriander:['芫茜山'],
+  pork:['火腿','鸡肉午餐肉','炸酱','乍酱','腩肉','猪肉','猪膶','卤水猪大肠','猪红','脆皮肠'],
+  beef:['牛肉','牛丸','滑牛肉','肥牛','牛面肉']
+};
 
-const $ = (id)=>document.getElementById(id);
-const randomItem = arr => arr[Math.floor(Math.random()*arr.length)];
+function randomItem(a){return a[Math.floor(Math.random()*a.length)]}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function textName(p){return typeof p.displayName==='string'?p.displayName:(p.displayName?.text||'未知餐厅')}
+function latLngOf(place){const l=place.location;if(!l)return null;return {lat:typeof l.lat==='function'?l.lat():l.lat,lng:typeof l.lng==='function'?l.lng():l.lng}}
+function km(a,b){const R=6371,rad=x=>x*Math.PI/180,d1=rad(b.lat-a.lat),d2=rad(b.lng-a.lng);const h=Math.sin(d1/2)**2+Math.cos(rad(a.lat))*Math.cos(rad(b.lat))*Math.sin(d2/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
+function profileFor(name){const n=name.toLowerCase();if(n.includes('三哥')||n.includes('samgor')||n.includes('sam gor'))return 'samgor';if(n.includes('谭仔')||n.includes('譚仔')||n.includes('tamjai')||n.includes('tam jai'))return 'tamjai';return null}
+function excluded(t){if($('noOffal').checked&&GROUPS.offal.includes(t))return true;if($('noCoriander').checked&&GROUPS.coriander.includes(t))return true;if($('noPork').checked&&GROUPS.pork.includes(t))return true;if($('noBeef').checked&&GROUPS.beef.includes(t))return true;return false}
 
-function candidates(){
-  const radius = parseFloat($("radius").value);
-  let pool = [];
-  demo.forEach(shop=>{
-    if(!shop.open || shop.distance > radius) return;
-    shop.dishes.forEach(dish=>{
-      if(dish.price > 80) return;
-      pool.push({...dish, restaurant:shop.restaurant, distance:shop.distance, map:shop.map});
-    });
+function makeDish(profile){
+  const m=MENU[profile];
+  let soups=m.soups;
+  if(mode==='spicy')soups=m.spicySoups;
+  if(mode==='comfort')soups=m.comfortSoups;
+  let toppings=m.toppings.filter(x=>!excluded(x));
+  if(!toppings.length)return null;
+  let count=mode==='cheap'?1:(mode==='comfort'?2:(1+Math.floor(Math.random()*3)));
+  count=Math.min(count,toppings.length);
+  const chosen=shuffle(toppings).slice(0,count);
+  const soup=randomItem(soups);
+  return `${soup} · ${chosen.join('＋')}米线`;
+}
+
+function setSetupVisible(show){$('setupCard').classList.toggle('hidden',!show)}
+function showToast(msg){$('toast').textContent=msg;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),1800)}
+function setBusy(b){$('randomBtn').disabled=b;$('randomBtn').textContent=b?'正在寻找附近米线…':'🎲 随机一下'}
+
+function loadGoogle(key){
+  return new Promise((resolve,reject)=>{
+    if(window.google?.maps){googleReady=true;resolve();return}
+    window.__gmReady=()=>{googleReady=true;$('dataBadge').textContent='Google 已连接';$('dataBadge').classList.add('ok');setSetupVisible(false);resolve()};
+    const s=document.createElement('script');
+    s.src=`https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}&v=weekly&loading=async&libraries=places&callback=__gmReady`;
+    s.async=true;s.onerror=()=>reject(new Error('Google Maps 加载失败'));
+    document.head.appendChild(s);
   });
-  if(mode==="spicy") pool = pool.filter(x=>x.spicy>=3);
-  if(mode==="cheap") {
-    const cheap = pool.filter(x=>x.price<=50);
-    if(cheap.length) pool = cheap;
-  }
-  if(mode==="comfort") {
-    const comfort = pool.filter(x=>x.comfort>=4);
-    if(comfort.length) pool = comfort;
-  }
-  return pool;
 }
 
-function spicyLabel(n){
-  if(n===0) return "不辣";
-  if(n<=2) return "微辣";
-  if(n<=4) return "中辣";
-  return "很辣";
+async function saveKey(){
+  const key=$('apiKeyInput').value.trim();if(!key){showToast('先粘贴 API Key');return}
+  localStorage.setItem(KEY_NAME,key);
+  try{await loadGoogle(key);showToast('Google 已连接')}catch(e){localStorage.removeItem(KEY_NAME);setSetupVisible(true);showToast('Key 无法使用，请检查 API 与限制设置')}
 }
 
-function draw(){
-  const pool = candidates();
-  if(!pool.length){
-    $("dish").textContent = "没有符合条件的米线";
-    $("restaurant").textContent = "把搜索半径调大一点试试。";
-    $("distance").textContent = "—";
-    $("price").textContent = "—";
-    $("spicy").textContent = "—";
-    $("status").textContent = "—";
-    $("mapBtn").disabled = true;
-    return;
+function locate(){
+  return new Promise((resolve,reject)=>{
+    if(!navigator.geolocation){reject(new Error('此浏览器不支持定位'));return}
+    navigator.geolocation.getCurrentPosition(p=>{
+      userPos={lat:p.coords.latitude,lng:p.coords.longitude};
+      $('locationBadge').textContent='📍 已使用当前位置';$('locationBadge').classList.add('ok');
+      resolve(userPos);
+    },e=>reject(e),{enableHighAccuracy:true,timeout:12000,maximumAge:120000});
+  });
+}
+
+async function searchStores(){
+  if(!googleReady)throw new Error('还没有连接 Google');
+  if(!userPos)await locate();
+  const {Place}=await google.maps.importLibrary('places');
+  const radiusKm=parseFloat($('radius').value);const queries=['米线','米線','谭仔米线','譚仔三哥米線'];
+  const byId=new Map();
+  for(const q of queries){
+    try{
+      const {places}=await Place.searchByText({
+        textQuery:q,
+        fields:['id','displayName','location','formattedAddress','googleMapsURI','businessStatus','rating','userRatingCount'],
+        includedType:'restaurant',
+        locationBias:userPos,
+        isOpenNow:true,
+        language:'zh-HK',region:'hk',maxResultCount:20
+      });
+      (places||[]).forEach(p=>{if(p.id)byId.set(p.id,p)});
+    }catch(e){console.warn(q,e)}
   }
-  let pick = randomItem(pool);
-  if(current && pool.length>1){
-    let guard = 0;
-    while(pick.restaurant===current.restaurant && pick.name===current.name && guard<12){
-      pick = randomItem(pool); guard++;
+  const all=[...byId.values()].map(p=>{
+    const ll=latLngOf(p);
+    const name=textName(p);
+    return {
+      id:p.id,
+      _name:name,
+      _profile:profileFor(name),
+      _distance:ll?km(userPos,ll):Infinity,
+      formattedAddress:p.formattedAddress||'',
+      googleMapsURI:p.googleMapsURI||'',
+      businessStatus:p.businessStatus||'',
+      rating:p.rating||null,
+      userRatingCount:p.userRatingCount||0
+    };
+  });
+  return all.filter(p=>p._profile&&p._distance<=radiusKm&&p.businessStatus!=='CLOSED_PERMANENTLY').sort((a,b)=>a._distance-b._distance);
+}
+
+async function draw(){
+  const key=localStorage.getItem(KEY_NAME);
+  if(!key){setSetupVisible(true);$('apiKeyInput').focus();showToast('先连接 Google Maps');return}
+  setBusy(true);
+  try{
+    if(!googleReady)await loadGoogle(key);
+    const stores=await searchStores();
+    if(!stores.length){
+      $('dish').textContent='这个范围内没有可核实菜单的店';
+      $('restaurant').textContent='目前 V2 菜单库先覆盖谭仔与谭仔三哥。把半径调大再试。';
+      $('reason').textContent='Google 可能找到其他米线店，但如果没有已核实菜单规则，系统不会替它编造菜品。';
+      return;
     }
-  }
-  current = pick;
-  history.unshift(pick); history = history.slice(0,6);
-
-  $("dish").textContent = pick.name;
-  $("restaurant").textContent = pick.restaurant;
-  $("distance").textContent = `${pick.distance.toFixed(1)} km`;
-  $("price").textContent = `HK$${pick.price}`;
-  $("spicy").textContent = spicyLabel(pick.spicy);
-  $("status").textContent = "营业中";
-  $("reason").textContent = `从 ${pool.length} 个符合条件的「店铺 × 菜品」组合中随机抽中。AI 不负责偏爱，只负责筛选。`;
-  $("rerollBtn").disabled = false;
-  $("mapBtn").disabled = false;
-  renderHistory();
+    let store=randomItem(stores);if(current&&stores.length>1){for(let i=0;i<8&&store.id===current.id;i++)store=randomItem(stores)}
+    const dish=makeDish(store._profile);if(!dish)throw new Error('筛选后没有可用配料');
+    current={...store,_dish:dish};history.unshift(current);history=history.slice(0,6);
+    $('dish').textContent=dish;
+    $('restaurant').textContent=`${store._name}${store.formattedAddress?' · '+store.formattedAddress:''}`;
+    $('distance').textContent=`${store._distance.toFixed(2)} km`;
+    $('rating').textContent=store.rating?`${store.rating.toFixed(1)} ★${store.userRatingCount?` (${store.userRatingCount})`:''}`:'未提供';
+    $('menuSource').textContent=MENU[store._profile].label;
+    $('status').textContent='Google 显示营业中';
+    $('reason').textContent=`在 ${stores.length} 家范围内、营业中且菜单规则已核实的门店中随机抽店；再从该品牌官方公开汤底与配料中随机生成一碗可点的自选米线。价格与个别分店供应以现场为准。`;
+    $('rerollBtn').disabled=false;$('mapBtn').disabled=false;$('menuBtn').disabled=false;renderHistory();
+  }catch(e){console.error(e);$('reason').textContent=`失败：${e.message||e}`;showToast(e.code===1?'请允许 Safari 使用位置':(e.message||'搜索失败'))}
+  finally{setBusy(false)}
 }
 
-function renderHistory(){
-  const el = $("historyList");
-  el.innerHTML = history.map(x=>`
-    <div class="mini">
-      <div class="m1">${x.restaurant}</div>
-      <div class="m2">${x.name}</div>
-    </div>`).join("");
-}
+function renderHistory(){$('historyList').innerHTML=history.map(x=>`<div class="mini"><div class="m1">${x._name} · ${x._distance.toFixed(2)} km</div><div class="m2">${x._dish}</div></div>`).join('')}
+function clock(){const d=new Date();$('clock').textContent=d.toLocaleTimeString('zh-HK',{hour:'2-digit',minute:'2-digit',hour12:false})}
 
-$("randomBtn").addEventListener("click", draw);
-$("rerollBtn").addEventListener("click", draw);
-$("mapBtn").addEventListener("click", ()=>{
-  if(current) window.open(current.map,"_blank");
-});
+$('saveKeyBtn').addEventListener('click',saveKey);
+$('randomBtn').addEventListener('click',draw);
+$('rerollBtn').addEventListener('click',draw);
+$('locateBtn').addEventListener('click',async()=>{try{await locate();showToast('定位成功')}catch(e){showToast('定位失败，请在 Safari 设置中允许位置')}});
+$('mapBtn').addEventListener('click',()=>{if(current?.googleMapsURI)window.open(current.googleMapsURI,'_blank')});
+$('menuBtn').addEventListener('click',()=>{if(current)window.open(MENU[current._profile].source,'_blank')});
+$('changeKeyBtn').addEventListener('click',()=>{setSetupVisible(true);$('apiKeyInput').value=localStorage.getItem(KEY_NAME)||'';$('apiKeyInput').focus()});
+$('forgetKeyBtn').addEventListener('click',()=>{localStorage.removeItem(KEY_NAME);location.reload()});
+$('radius').addEventListener('input',e=>$('radiusLabel').textContent=e.target.value);
+document.querySelectorAll('.pill').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');mode=btn.dataset.mode;showToast(`模式：${btn.textContent}`)}));
 
-document.querySelectorAll(".pill").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    document.querySelectorAll(".pill").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    mode = btn.dataset.mode;
-    showToast(`模式：${btn.textContent}`);
-  });
-});
+clock();setInterval(clock,30000);
+const saved=localStorage.getItem(KEY_NAME);
+if(saved){setSetupVisible(false);loadGoogle(saved).catch(()=>{setSetupVisible(true);$('dataBadge').textContent='Google 连接失败'})}else setSetupVisible(true);
 
-$("radius").addEventListener("input", e=>{
-  $("radiusLabel").textContent = e.target.value;
-});
-
-function showToast(msg){
-  $("toast").textContent=msg;
-  $("toast").classList.add("show");
-  setTimeout(()=>$("toast").classList.remove("show"),1400);
-}
-
-function clock(){
-  const d = new Date();
-  $("clock").textContent = d.toLocaleTimeString("zh-HK",{hour:"2-digit",minute:"2-digit",hour12:false});
-}
-clock(); setInterval(clock,30000);
 </script>
 </body>
 </html>

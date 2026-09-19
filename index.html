@@ -23,7 +23,7 @@
 
   <section class="hero">
     <div class="hero-head">
-      <div class="eyebrow">今天吃什么.exe · V2.1</div>
+      <div class="eyebrow">今天吃什么.exe · V2.1.1</div>
       <h1>今天不许纠结。</h1>
       <p class="sub">真实位置 → Google 找附近米线店 → 只对有已核实菜单规则的店生成具体米线 → 真随机。</p>
       <div class="live-row">
@@ -114,7 +114,7 @@
   </section>
 
   <div class="foot">
-    LIVE BETA V2.1 · 餐厅位置、距离、评分与营业筛选来自 Google Maps Platform；具体米线目前覆盖「谭仔云南米线」「谭仔三哥米线」及「银米 Yinmi」，并只使用品牌官方已公开的汤底、配料或菜式名称。价格和分店实际供应以门店为准。
+    LIVE BETA V2.1.1 · 餐厅位置、距离、评分与营业筛选来自 Google Maps Platform；具体米线目前覆盖「谭仔云南米线」「谭仔三哥米线」及「银米 Yinmi」，并只使用品牌官方已公开的汤底、配料或菜式名称。价格和分店实际供应以门店为准。
   </div>
 </main>
 <div class="toast" id="toast"></div>
@@ -250,7 +250,7 @@ async function searchStores(){
       userRatingCount:p.userRatingCount||0
     };
   });
-  return all.filter(p=>p._profile&&p._distance<=radiusKm&&p.businessStatus!=='CLOSED_PERMANENTLY&&(minRating===0||(p.rating&&p.rating>=minRating))).sort((a,b)=>a._distance-b._distance);
+  return all.filter(p=>p._profile&&p._distance<=radiusKm&&p.businessStatus!=='CLOSED_PERMANENTLY'&&(minRating===0||(p.rating&&p.rating>=minRating))).sort((a,b)=>a._distance-b._distance);
 }
 
 async function draw(){
